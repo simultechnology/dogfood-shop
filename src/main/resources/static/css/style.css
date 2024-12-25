@@ -1,0 +1,150 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Card Hover Effects */
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Custom Button Styles */
+.btn-primary {
+    background-color: #4A90E2;
+    border-color: #4A90E2;
+}
+
+.btn-primary:hover {
+    background-color: #357ABD;
+    border-color: #357ABD;
+}
+
+.btn-outline-primary {
+    color: #4A90E2;
+    border-color: #4A90E2;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4A90E2;
+    border-color: #4A90E2;
+}
+
+/* Navbar Styles */
+.navbar {
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Product Card Styles */
+.product-card {
+    height: 100%;
+}
+
+.product-card img {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Price Tag Styles */
+.price-tag {
+    font-weight: 600;
+    color: #4A90E2;
+}
+
+/* Category Pills */
+.category-pill {
+    background-color: #f8f9fa;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    transition: background-color 0.2s ease;
+}
+
+.category-pill:hover {
+    background-color: #e9ecef;
+}
+
+/* Custom Breadcrumb */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+}
+
+/* Stock Badge */
+.stock-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.stock-badge.in-stock {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.stock-badge.out-of-stock {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Quantity Selector */
+.quantity-selector {
+    width: 100px;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #f8f9fa;
+}
+
+.footer-link {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #4A90E2;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}

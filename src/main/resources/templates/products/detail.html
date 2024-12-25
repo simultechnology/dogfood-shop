@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>商品詳細</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="row">
+            <!-- 商品画像 -->
+            <div class="col-md-6">
+                <div class="card border-0">
+                    <img th:src="${product.imageUrl}" class="card-img-top rounded-3" alt="商品画像"
+                         style="height: 400px; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- 商品情報 -->
+            <div class="col-md-6">
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/products}">商品一覧</a></li>
+                        <li class="breadcrumb-item active" th:text="${product.category.name}">カテゴリー</li>
+                    </ol>
+                </nav>
+
+                <h1 class="mb-3" th:text="${product.name}">商品名</h1>
+                <p class="h3 text-primary mb-4" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '円'">
+                    価格
+                </p>
+
+                <div class="mb-4">
+                    <h5>商品説明</h5>
+                    <p class="text-muted" th:text="${product.description}">商品の詳細説明</p>
+                </div>
+
+                <div class="mb-4">
+                    <h5>在庫状況</h5>
+                    <p th:if="${product.stock > 0}" class="text-success">
+                        <i class="bi bi-check-circle-fill"></i> 在庫あり
+                    </p>
+                    <p th:unless="${product.stock > 0}" class="text-danger">
+                        <i class="bi bi-x-circle-fill"></i> 在庫なし
+                    </p>
+                </div>
+
+                <!-- カートに追加フォーム -->
+                <form th:action="@{/cart/add}" method="post" class="mb-4">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label for="quantity" class="col-form-label">数量:</label>
+                        </div>
+                        <div class="col-auto">
+                            <select name="quantity" id="quantity" class="form-select" required>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary"
+                                    th:disabled="${product.stock == 0}">
+                                <i class="bi bi-cart-plus"></i> カートに追加
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- 特徴 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">商品の特徴</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-check-lg text-success me-2"></i>
+                            厳選された原材料を使用
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-lg text-success me-2"></i>
+                            栄養バランスに配慮
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-check-lg text-success me-2"></i>
+                            安心・安全な製造工程
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- レコメンデーション -->
+        <div class="mt-5">
+            <h3 class="mb-4">おすすめの商品</h3>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="recommendedProduct : ${recommendedProducts}">
+                    <div class="card h-100 shadow-sm">
+                        <img th:src="${recommendedProduct.imageUrl}" class="card-img-top" alt="商品画像" 
+                             style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${recommendedProduct.name}">おすすめ商品</h5>
+                            <p class="card-text text-muted" th:text="${recommendedProduct.description}">商品説明</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h6 mb-0" th:text="${#numbers.formatDecimal(recommendedProduct.price, 0, 'COMMA', 0, 'POINT')} + '円'">価格</span>
+                                <a th:href="@{/products/{id}(id=${recommendedProduct.id})}" 
+                                   class="btn btn-sm btn-outline-primary">詳細を見る</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
