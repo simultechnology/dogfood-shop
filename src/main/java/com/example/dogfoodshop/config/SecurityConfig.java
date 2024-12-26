@@ -5,12 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -32,6 +28,8 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/products", true)
                 .failureUrl("/login?error")
+                .usernameParameter("username")    // formのname属性と一致させる
+                .passwordParameter("password")    // formのname属性と一致させる
                 .permitAll()
             )
             .logout(logout -> logout
@@ -39,23 +37,6 @@ public class SecurityConfig {
                 .permitAll()
             );
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        UserDetails user = User.builder()
-            .username("user")
-            .password(encoder.encode("password"))
-            .roles("USER")
-            .build();
-
-        UserDetails admin = User.builder()
-            .username("admin")
-            .password(encoder.encode("adminpass"))
-            .roles("ADMIN", "USER")
-            .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
     }
 
     @Bean
