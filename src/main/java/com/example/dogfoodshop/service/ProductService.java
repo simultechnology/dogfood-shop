@@ -1,16 +1,21 @@
 package com.example.dogfoodshop.service;
 
+import com.example.dogfoodshop.form.ProductForm;
 import com.example.dogfoodshop.model.Product;
+import com.example.dogfoodshop.repository.CategoryRepository;
 import com.example.dogfoodshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     public List<Product> getAllProducts() {
         return productRepository.findByActiveTrue();
@@ -21,16 +26,18 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
-    public List<Product> getProductsByCategory(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
-    }
-
-    public List<Product> searchProducts(String keyword) {
-        return productRepository.search(keyword);
-    }
-
     @Transactional
-    public Product saveProduct(Product product) {
+    public Product createProduct(ProductForm form) {
+        Product product = new Product();
+        product.setName(form.getName());
+        product.setDescription(form.getDescription());
+        product.setPrice(form.getPrice());
+        product.setStock(form.getStock());
+        product.setImageUrl(form.getImageUrl());
+        product.setCategory(categoryRepository.findById(form.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found")));
+        product.setActive(true);
+        
         return productRepository.save(product);
     }
 
