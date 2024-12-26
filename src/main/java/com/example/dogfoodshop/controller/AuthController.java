@@ -1,27 +1,39 @@
 package com.example.dogfoodshop.controller;
 
+import com.example.dogfoodshop.form.AdminRegistrationForm;
+import com.example.dogfoodshop.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthController {
+    private final UserService userService;
 
     @GetMapping("/login")
     public String login() {
         return "auth/login";
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "auth/register";
+    @GetMapping("/admin/register")
+    public String adminRegisterForm(Model model) {
+        model.addAttribute("adminRegistrationForm", new AdminRegistrationForm());
+        return "auth/admin-register";
     }
 
-    @PostMapping("/register")
-    public String registerUser() {
-        // TODO: 登録処理を実装
-        return "redirect:/login";
+    @PostMapping("/admin/register")
+    public String adminRegister(@Valid @ModelAttribute AdminRegistrationForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return "auth/admin-register";
+        }
+
+        userService.createAdminUser(form);
+        return "redirect:/login?registered";
     }
 }

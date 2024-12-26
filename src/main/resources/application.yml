@@ -5,7 +5,7 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -16,10 +16,13 @@ spring:
     init:
       mode: always
       platform: postgresql
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
 
 logging:
   level:
     org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
 
 server:
   port: 38880
