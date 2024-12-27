@@ -20,7 +20,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-                .requestMatchers("/", "/products/**", "/login", "/admin/register").permitAll()
+                .requestMatchers("/", "/products/**", "/login", "/admin/register", "/register").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -28,8 +28,8 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/products", true)
                 .failureUrl("/login?error")
-                .usernameParameter("username")    // formのname属性と一致させる
-                .passwordParameter("password")    // formのname属性と一致させる
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .permitAll()
             )
             .logout(logout -> logout

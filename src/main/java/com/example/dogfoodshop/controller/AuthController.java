@@ -21,6 +21,21 @@ public class AuthController {
         return "auth/login";
     }
 
+    @GetMapping("/register")
+    public String registerForm(Model model) {
+        model.addAttribute("adminRegistrationForm", new AdminRegistrationForm());
+        return "auth/register";
+    }
+
+    @PostMapping("/register")
+    public String register(@Valid @ModelAttribute AdminRegistrationForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return "auth/register";
+        }
+        userService.createAdminUser(form);
+        return "redirect:/login?registered";
+    }
+
     @GetMapping("/admin/register")
     public String adminRegisterForm(Model model) {
         model.addAttribute("adminRegistrationForm", new AdminRegistrationForm());
@@ -32,7 +47,6 @@ public class AuthController {
         if (result.hasErrors()) {
             return "auth/admin-register";
         }
-
         userService.createAdminUser(form);
         return "redirect:/login?registered";
     }
